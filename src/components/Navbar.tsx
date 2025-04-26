@@ -30,22 +30,22 @@ export default function Navbar() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <div className={`${styles.menu} ${isMenuOpen ? styles.menuOpen : ''}`}>
                         <Link href="/" className={`${styles.menuItem} ${pathname === '/' ? styles.active : ''}`}>
-                            首页
+                            Home
                         </Link>
                         <Link href="/scenes" className={`${styles.menuItem} ${pathname === '/scenes' ? styles.active : ''}`}>
-                            场景练习
+                            Scene Practice
                         </Link>
                         <Link href="/pronunciation" className={`${styles.menuItem} ${pathname === '/pronunciation' ? styles.active : ''}`}>
-                            发音纠错
+                            Pronunciation
                         </Link>
                         <Link href="/squid-game" className={`${styles.menuItem} ${pathname === '/squid-game' ? styles.active : ''}`}>
-                            鱿鱼游戏
+                            Squid Game
                         </Link>
                         <Link href="/about" className={`${styles.menuItem} ${pathname === '/about' ? styles.active : ''}`}>
-                            关于
+                            About
                         </Link>
                         <Link href="/settings" className={`${styles.menuItem} ${pathname === '/settings' ? styles.active : ''}`}>
-                            设置
+                            Settings
                         </Link>
                     </div>
 
@@ -73,7 +73,7 @@ export default function Navbar() {
                         <GitHubIcon />
                     </a>
 
-                    <button 
+                    <button
                         className={`${styles.menuButton} ${isMenuOpen ? styles.active : ''}`}
                         onClick={toggleMenu}
                         aria-label="Toggle menu"
@@ -86,4 +86,4 @@ export default function Navbar() {
             </div>
         </nav>
     );
-} 
+}

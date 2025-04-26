@@ -38,9 +38,9 @@ const WordDalgona: React.FC<Props> = ({ onComplete, currentStars }) => {
     setScore(0);
     setDifficulty(diff);
     setGameState('playing');
-    
-    // 创建达尔戈纳饼干的裂纹模式
-    const pattern = Array(10).fill(null).map(() => 
+
+    // Create crack pattern for the Dalgona cookie
+    const pattern = Array(10).fill(null).map(() =>
       Array(10).fill(false)
     );
     setCrackedPattern(pattern);
@@ -53,7 +53,7 @@ const WordDalgona: React.FC<Props> = ({ onComplete, currentStars }) => {
     newRevealedLetters[index] = true;
     setRevealedLetters(newRevealedLetters);
 
-    // 添加裂纹效果
+    // Add crack effect
     const newPattern = crackedPattern.map(row => [...row]);
     const centerX = Math.floor(Math.random() * 10);
     const centerY = Math.floor(Math.random() * 10);
@@ -68,7 +68,7 @@ const WordDalgona: React.FC<Props> = ({ onComplete, currentStars }) => {
     }
     setCrackedPattern(newPattern);
 
-    // 检查是否完成单词
+    // Check if the word is complete
     const isWordComplete = newRevealedLetters.every(letter => letter);
     if (isWordComplete) {
       setScore(prev => prev + difficulty);
@@ -104,13 +104,13 @@ const WordDalgona: React.FC<Props> = ({ onComplete, currentStars }) => {
     <div className={styles.container}>
       {gameState === 'start' && (
         <div className={styles.startScreen}>
-          <h2>单词达尔戈纳</h2>
-          <p>小心翼翼地"刻出"正确的单词，不要弄碎糖饼！</p>
-          <p>当前最高星星数: {currentStars}⭐</p>
+          <h2>Word Dalgona</h2>
+          <p>Carefully "carve out" the correct word without breaking the candy!</p>
+          <p>Current highest stars: {currentStars}⭐</p>
           <div className={styles.difficultyButtons}>
-            <button onClick={() => initializeGame(1)}>简单模式</button>
-            <button onClick={() => initializeGame(2)}>中等模式</button>
-            <button onClick={() => initializeGame(3)}>困难模式</button>
+            <button onClick={() => initializeGame(1)}>Easy Mode</button>
+            <button onClick={() => initializeGame(2)}>Medium Mode</button>
+            <button onClick={() => initializeGame(3)}>Hard Mode</button>
           </div>
         </div>
       )}
@@ -118,18 +118,18 @@ const WordDalgona: React.FC<Props> = ({ onComplete, currentStars }) => {
       {gameState === 'playing' && (
         <div className={styles.gameScreen}>
           <div className={styles.gameInfo}>
-            <div>时间: {timeLeft}s</div>
-            <div>得分: {score}</div>
-            <div>难度: {difficulty}</div>
+            <div>Time: {timeLeft}s</div>
+            <div>Score: {score}</div>
+            <div>Difficulty: {difficulty}</div>
           </div>
-          
+
           <div className={styles.dalgona}>
             <div className={styles.cracksOverlay}>
               {crackedPattern.map((row, i) => (
                 <div key={i} className={styles.crackRow}>
                   {row.map((cracked, j) => (
-                    <div 
-                      key={j} 
+                    <div
+                      key={j}
                       className={`${styles.crackCell} ${cracked ? styles.cracked : ''}`}
                     />
                   ))}
@@ -153,13 +153,13 @@ const WordDalgona: React.FC<Props> = ({ onComplete, currentStars }) => {
 
       {gameState === 'end' && (
         <div className={styles.endScreen}>
-          <h2>游戏结束!</h2>
-          <p>最终得分: {score}</p>
-          <button onClick={() => setGameState('start')}>再玩一次</button>
+          <h2>Game Over!</h2>
+          <p>Final Score: {score}</p>
+          <button onClick={() => setGameState('start')}>Play Again</button>
         </div>
       )}
     </div>
   );
 };
 
-export default WordDalgona; 
+export default WordDalgona;

@@ -7,354 +7,354 @@ import { SpeechUtils } from '@/utils/speechUtils';
 const commonSentences = [
     {
         text: "I'd like a **cup of coffee**, please.",
-        translation: "我想要一杯咖啡，谢谢。",
-        focus: "注意 'd like 的连读和 coffee 的重音",
-        context: "在咖啡店点餐",
-        formality: "通用",
+        translation: "I would like a cup of coffee, please.",
+        focus: "Note the contraction in 'd like and the stress on coffee",
+        context: "Ordering at a coffee shop",
+        formality: "General",
         emphasis: ["cup of coffee"]
     },
     {
         text: "**Could you** repeat that, please?",
-        translation: "请您再说一遍好吗？",
-        focus: "注意 Could you 的弱读，通常发音类似 'Cud ya'",
-        context: "听不清对方说话时",
-        formality: "礼貌正式",
+        translation: "Could you please say that again?",
+        focus: "Note the weak form of 'Could you', usually pronounced like 'Cud ya'",
+        context: "When you can't hear what someone said",
+        formality: "Polite formal",
         emphasis: ["Could you"]
     },
     {
         text: "**What do you do** for a living?",
-        translation: "你是做什么工作的？",
-        focus: "注意 What do you 的连读，通常发音类似 'Whaddya'",
-        context: "初次见面社交场合",
-        formality: "通用",
+        translation: "What do you do for work?",
+        focus: "Note the linking in 'What do you', usually pronounced like 'Whaddya'",
+        context: "First meeting in social settings",
+        formality: "General",
         emphasis: ["What do you do"]
     },
     {
         text: "**Nice to meet** you!",
-        translation: "很高兴见到你！",
-        focus: "注意 Nice to 的连读，meet 的重音",
-        context: "初次见面",
-        formality: "通用",
+        translation: "Nice to meet you!",
+        focus: "Note the linking in 'Nice to' and the stress on 'meet'",
+        context: "First meeting",
+        formality: "General",
         emphasis: ["Nice to meet"]
     },
     {
         text: "I'm **gonna** go to the **movies**.",
-        translation: "我要去看电影。",
-        focus: "注意 gonna 是 going to 的口语形式，movies 的重音在第一个音节",
-        context: "日常对话",
-        formality: "非正式",
+        translation: "I'm going to go to the movies.",
+        focus: "Note that 'gonna' is the casual form of 'going to', and the stress in 'movies' is on the first syllable",
+        context: "Daily conversation",
+        formality: "Informal",
         emphasis: ["gonna", "movies"]
     },
     {
         text: "**Would you mind** if I opened the window?",
-        translation: "介意我开一下窗户吗？",
-        focus: "注意 Would you 的连读，mind 的语调上扬",
-        context: "请求许可",
-        formality: "正式礼貌",
+        translation: "Would you mind if I opened the window?",
+        focus: "Note the linking in 'Would you' and the rising intonation on 'mind'",
+        context: "Asking for permission",
+        formality: "Formal polite",
         emphasis: ["Would you mind"]
     },
     {
         text: "**What's up** with you?",
-        translation: "你最近怎么样？",
-        focus: "注意 What's up 的连读，通常发音类似 'Wassup'",
-        context: "朋友间打招呼",
-        formality: "非常非正式",
+        translation: "How are you doing?",
+        focus: "Note the linking in 'What's up', usually pronounced like 'Wassup'",
+        context: "Greeting between friends",
+        formality: "Very informal",
         emphasis: ["What's up"]
     },
     {
         text: "I **should've** done it earlier.",
-        translation: "我早该做这件事的。",
-        focus: "注意 should've 的缩读，不要发成 should of",
-        context: "表达后悔",
-        formality: "通用",
+        translation: "I should have done it earlier.",
+        focus: "Note the contraction in 'should've', don't pronounce it as 'should of'",
+        context: "Expressing regret",
+        formality: "General",
         emphasis: ["should've"]
     },
     {
         text: "**Lemme** think about it.",
-        translation: "让我想想。",
-        focus: "注意 Lemme 是 Let me 的口语形式",
-        context: "需要时间思考时",
-        formality: "非正式",
+        translation: "Let me think about it.",
+        focus: "Note that 'Lemme' is the casual form of 'Let me'",
+        context: "When you need time to think",
+        formality: "Informal",
         emphasis: ["Lemme"]
     },
     {
         text: "**Gimme** a minute.",
-        translation: "给我一分钟。",
-        focus: "注意 Gimme 是 Give me 的口语形式",
-        context: "需要一点时间时",
-        formality: "非正式",
+        translation: "Give me a minute.",
+        focus: "Note that 'Gimme' is the casual form of 'Give me'",
+        context: "When you need a little time",
+        formality: "Informal",
         emphasis: ["Gimme"]
     },
     {
         text: "I **dunno** what to do.",
-        translation: "我不知道该怎么办。",
-        focus: "注意 dunno 是 don't know 的口语形式",
-        context: "表达困惑",
-        formality: "非正式",
+        translation: "I don't know what to do.",
+        focus: "Note that 'dunno' is the casual form of 'don't know'",
+        context: "Expressing confusion",
+        formality: "Informal",
         emphasis: ["dunno"]
     },
     {
         text: "**Wanna** grab some lunch?",
-        translation: "想去吃午饭吗？",
-        focus: "注意 Wanna 是 want to 的口语形式",
-        context: "邀请用餐",
-        formality: "非正式",
+        translation: "Do you want to get some lunch?",
+        focus: "Note that 'Wanna' is the casual form of 'want to'",
+        context: "Inviting someone to eat",
+        formality: "Informal",
         emphasis: ["Wanna"]
     },
     {
         text: "**Gotta** run, catch you later!",
-        translation: "我得走了，回头见！",
-        focus: "注意 Gotta 是 got to 的口语形式",
-        context: "匆忙离开",
-        formality: "非正式",
+        translation: "I have to go, see you later!",
+        focus: "Note that 'Gotta' is the casual form of 'got to'",
+        context: "Leaving in a hurry",
+        formality: "Informal",
         emphasis: ["Gotta"]
     },
     {
         text: "**How've** you been?",
-        translation: "你最近怎么样？",
-        focus: "注意 How've 的缩读，是 How have 的缩写",
-        context: "问候",
-        formality: "通用",
+        translation: "How have you been?",
+        focus: "Note the contraction in 'How've', which is short for 'How have'",
+        context: "Greeting",
+        formality: "General",
         emphasis: ["How've"]
     },
     {
         text: "**D'you** know what I mean?",
-        translation: "你明白我的意思吗？",
-        focus: "注意 D'you 是 Do you 的口语缩读",
-        context: "确认理解",
-        formality: "非正式",
+        translation: "Do you understand what I mean?",
+        focus: "Note that 'D'you' is the casual contraction of 'Do you'",
+        context: "Confirming understanding",
+        formality: "Informal",
         emphasis: ["D'you"]
     },
     {
         text: "I **could've** sworn I put it here.",
-        translation: "我发誓我把它放在这里了。",
-        focus: "注意 could've 的缩读，是 could have 的缩写",
-        context: "表达确信",
-        formality: "通用",
+        translation: "I swear I put it here.",
+        focus: "Note the contraction in 'could've', which is short for 'could have'",
+        context: "Expressing certainty",
+        formality: "General",
         emphasis: ["could've"]
     },
     {
         text: "**What're** you up to?",
-        translation: "你在忙什么呢？",
-        focus: "注意 What're 是 What are 的缩读",
-        context: "询问近况",
-        formality: "非正式",
+        translation: "What are you doing?",
+        focus: "Note that 'What're' is a contraction of 'What are'",
+        context: "Asking about current activities",
+        formality: "Informal",
         emphasis: ["What're"]
     },
     {
         text: "**Where've** you been?",
-        translation: "你去哪儿了？",
-        focus: "注意 Where've 是 Where have 的缩读",
-        context: "询问去向",
-        formality: "通用",
+        translation: "Where have you been?",
+        focus: "Note that 'Where've' is a contraction of 'Where have'",
+        context: "Asking about someone's whereabouts",
+        formality: "General",
         emphasis: ["Where've"]
     },
     {
         text: "**Ain't** that the truth!",
-        translation: "可不是嘛！",
-        focus: "注意 Ain't 是 isn't/aren't 的���正式用法",
-        context: "表示赞同",
-        formality: "非常非正式",
+        translation: "That's certainly true!",
+        focus: "Note that 'Ain't' is an informal form of 'isn't/aren't'",
+        context: "Expressing agreement",
+        formality: "Very informal",
         emphasis: ["Ain't"]
     },
     {
         text: "**Y'all** ready?",
-        translation: "你们都准备好了吗？",
-        focus: "注意 Y'all 是 you all 的南方口语",
-        context: "询问准备情况",
-        formality: "非正式",
+        translation: "Are you all ready?",
+        focus: "Note that 'Y'all' is a Southern dialect form of 'you all'",
+        context: "Asking about readiness",
+        formality: "Informal",
         emphasis: ["Y'all"]
     },
     {
         text: "I'm **kinda** tired.",
-        translation: "我有点累。",
-        focus: "注意 kinda 是 kind of 的口语形式",
-        context: "表达状态",
-        formality: "非正式",
+        translation: "I'm somewhat tired.",
+        focus: "Note that 'kinda' is the casual form of 'kind of'",
+        context: "Expressing a state",
+        formality: "Informal",
         emphasis: ["kinda"]
     },
     {
         text: "It's **sorta** like that.",
-        translation: "有点像那样。",
-        focus: "注意 sorta 是 sort of 的口语形式",
-        context: "做比较",
-        formality: "非正式",
+        translation: "It's somewhat like that.",
+        focus: "Note that 'sorta' is the casual form of 'sort of'",
+        context: "Making comparisons",
+        formality: "Informal",
         emphasis: ["sorta"]
     },
     {
         text: "**Whatcha** doing?",
-        translation: "你在做什么？",
-        focus: "注意 Whatcha 是 What are you 的口语形式",
-        context: "询问当前活动",
-        formality: "非正式",
+        translation: "What are you doing?",
+        focus: "Note that 'Whatcha' is the casual form of 'What are you'",
+        context: "Asking about current activities",
+        formality: "Informal",
         emphasis: ["Whatcha"]
     },
     {
         text: "**How come** you didn't tell me?",
-        translation: "你怎么没告诉我？",
-        focus: "注意 How come 是 Why 的口语替代",
-        context: "询问原因",
-        formality: "非正式",
+        translation: "Why didn't you tell me?",
+        focus: "Note that 'How come' is a casual alternative to 'Why'",
+        context: "Asking for reasons",
+        formality: "Informal",
         emphasis: ["How come"]
     },
     {
         text: "**C'mere** for a second.",
-        translation: "过来一下。",
-        focus: "注意 C'mere 是 Come here 的口语缩读",
-        context: "叫人过来",
-        formality: "非正式",
+        translation: "Come here for a second.",
+        focus: "Note that 'C'mere' is the casual contraction of 'Come here'",
+        context: "Calling someone over",
+        formality: "Informal",
         emphasis: ["C'mere"]
     },
     {
         text: "**D'ya** wanna come with?",
-        translation: "你想一起来吗？",
-        focus: "注意 D'ya 是 Do you 的口语缩读",
-        context: "邀请",
-        formality: "非正式",
+        translation: "Do you want to come along?",
+        focus: "Note that 'D'ya' is the casual contraction of 'Do you'",
+        context: "Invitation",
+        formality: "Informal",
         emphasis: ["D'ya"]
     },
     {
         text: "I'm **fixin' to** leave.",
-        translation: "我准备要走了。",
-        focus: "注意 fixin' to 是南方口语，表示 preparing to",
-        context: "表达即将行动",
-        formality: "非正式",
+        translation: "I'm preparing to leave.",
+        focus: "Note that 'fixin' to' is Southern dialect meaning 'preparing to'",
+        context: "Expressing imminent action",
+        formality: "Informal",
         emphasis: ["fixin' to"]
     },
     {
         text: "**Betcha** can't do it!",
-        translation: "我打赌你做不到！",
-        focus: "注意 Betcha 是 I bet you 的口语缩读",
-        context: "打赌挑战",
-        formality: "非正式",
+        translation: "I bet you can't do it!",
+        focus: "Note that 'Betcha' is the casual contraction of 'I bet you'",
+        context: "Making a challenge",
+        formality: "Informal",
         emphasis: ["Betcha"]
     },
     {
         text: "**Wouldja** mind moving?",
-        translation: "你介意挪一下吗？",
-        focus: "注意 Wouldja 是 Would you 的口语缩读",
-        context: "礼貌请求",
-        formality: "非正式",
+        translation: "Would you mind moving?",
+        focus: "Note that 'Wouldja' is the casual contraction of 'Would you'",
+        context: "Polite request",
+        formality: "Informal",
         emphasis: ["Wouldja"]
     },
     {
         text: "**Didja** hear about that?",
-        translation: "你听说那件事了吗？",
-        focus: "注意 Didja 是 Did you 的口语缩读",
-        context: "询问消息",
-        formality: "非正式",
+        translation: "Did you hear about that?",
+        focus: "Note that 'Didja' is the casual contraction of 'Did you'",
+        context: "Asking about news",
+        formality: "Informal",
         emphasis: ["Didja"]
     },
     {
         text: "**Hafta** go now.",
-        translation: "现在必须走了。",
-        focus: "注意 Hafta 是 have to 的口语形式",
-        context: "表达必要性",
-        formality: "非正式",
+        translation: "Have to go now.",
+        focus: "Note that 'Hafta' is the casual form of 'have to'",
+        context: "Expressing necessity",
+        formality: "Informal",
         emphasis: ["Hafta"]
     },
     {
         text: "**S'pose** we should start.",
-        translation: "我想我们该开始了。",
-        focus: "注意 S'pose 是 Suppose 的口语缩读",
-        context: "提出建议",
-        formality: "非正式",
+        translation: "I suppose we should start.",
+        focus: "Note that 'S'pose' is the casual contraction of 'Suppose'",
+        context: "Making a suggestion",
+        formality: "Informal",
         emphasis: ["S'pose"]
     },
     {
         text: "**Imma** head out.",
-        translation: "我要走了。",
-        focus: "注意 Imma 是 I am going to 的极度口语形式",
-        context: "表达离开意图",
-        formality: "非常非正式",
+        translation: "I'm going to head out.",
+        focus: "Note that 'Imma' is an extremely casual form of 'I am going to'",
+        context: "Expressing intention to leave",
+        formality: "Very informal",
         emphasis: ["Imma"]
     },
     {
         text: "**How'd** you do that?",
-        translation: "你是怎么做到的？",
-        focus: "注意 How'd 是 How did 的缩读",
-        context: "询问方法",
-        formality: "通用",
+        translation: "How did you do that?",
+        focus: "Note that 'How'd' is a contraction of 'How did'",
+        context: "Asking about methods",
+        formality: "General",
         emphasis: ["How'd"]
     },
     {
         text: "**What'd** you say?",
-        translation: "你说什么？",
-        focus: "注意 What'd 是 What did 的缩读",
-        context: "请求重复",
-        formality: "通用",
+        translation: "What did you say?",
+        focus: "Note that 'What'd' is a contraction of 'What did'",
+        context: "Requesting repetition",
+        formality: "General",
         emphasis: ["What'd"]
     },
     {
         text: "**Where'd** you get that?",
-        translation: "你从哪里得到的？",
-        focus: "注意 Where'd 是 Where did 的缩读",
-        context: "询问来源",
-        formality: "通用",
+        translation: "Where did you get that?",
+        focus: "Note that 'Where'd' is a contraction of 'Where did'",
+        context: "Asking about sources",
+        formality: "General",
         emphasis: ["Where'd"]
     },
     {
         text: "**When're** we leaving?",
-        translation: "我们什么时候走？",
-        focus: "注意 When're 是 When are 的缩读",
-        context: "询问时间",
-        formality: "通用",
+        translation: "When are we leaving?",
+        focus: "Note that 'When're' is a contraction of 'When are'",
+        context: "Asking about time",
+        formality: "General",
         emphasis: ["When're"]
     },
     {
         text: "**Who're** you waiting for?",
-        translation: "你在等谁？",
-        focus: "注意 Who're 是 Who are 的缩读",
-        context: "询问对象",
-        formality: "通用",
+        translation: "Who are you waiting for?",
+        focus: "Note that 'Who're' is a contraction of 'Who are'",
+        context: "Asking about a person",
+        formality: "General",
         emphasis: ["Who're"]
     },
     {
         text: "**That'll** work.",
-        translation: "那样可以。",
-        focus: "注意 That'll 是 That will 的缩读",
-        context: "表示同意",
-        formality: "通用",
+        translation: "That will work.",
+        focus: "Note that 'That'll' is a contraction of 'That will'",
+        context: "Expressing agreement",
+        formality: "General",
         emphasis: ["That'll"]
     },
     {
         text: "**It'll** be fine.",
-        translation: "会没事的。",
-        focus: "注意 It'll 是 It will 的缩读",
-        context: "安慰",
-        formality: "通用",
+        translation: "It will be fine.",
+        focus: "Note that 'It'll' is a contraction of 'It will'",
+        context: "Reassurance",
+        formality: "General",
         emphasis: ["It'll"]
     },
     {
         text: "**They'll** be here soon.",
-        translation: "他们很快就到。",
-        focus: "注意 They'll 是 They will 的缩读",
-        context: "预测",
-        formality: "通用",
+        translation: "They will be here soon.",
+        focus: "Note that 'They'll' is a contraction of 'They will'",
+        context: "Making a prediction",
+        formality: "General",
         emphasis: ["They'll"]
     },
     {
         text: "**We'll** see about that.",
-        translation: "那就走着瞧吧。",
-        focus: "注意 We'll 是 We will 的缩读",
-        context: "表示怀疑",
-        formality: "通用",
+        translation: "We will see about that.",
+        focus: "Note that 'We'll' is a contraction of 'We will'",
+        context: "Expressing doubt",
+        formality: "General",
         emphasis: ["We'll"]
     },
     {
         text: "**I'll** get back to you.",
-        translation: "我稍后回复你。",
-        focus: "注意 I'll 是 I will 的缩读",
-        context: "承诺回复",
-        formality: "通用",
+        translation: "I will get back to you.",
+        focus: "Note that 'I'll' is a contraction of 'I will'",
+        context: "Promising to respond",
+        formality: "General",
         emphasis: ["I'll"]
     },
     {
         text: "**You'll** love it!",
-        translation: "你会喜欢的！",
-        focus: "注意 You'll 是 You will 的缩读",
-        context: "表达确信",
-        formality: "通用",
+        translation: "You will love it!",
+        focus: "Note that 'You'll' is a contraction of 'You will'",
+        context: "Expressing certainty",
+        formality: "General",
         emphasis: ["You'll"]
     }
 ];
@@ -388,7 +388,7 @@ export default function PronunciationPage() {
             setRecordingIndex(index);
         } catch (error) {
             console.error('Error accessing microphone:', error);
-            alert('无法访问麦克风，请确保已授予权限。');
+            alert('Cannot access microphone. Please make sure you have granted permission.');
         }
     };
 
@@ -405,7 +405,7 @@ export default function PronunciationPage() {
             await SpeechUtils.playTTS(text);
         } catch (error) {
             console.error('Error playing TTS:', error);
-            alert('播放语音失败，请检查语音设置。');
+            alert('Failed to play audio. Please check your audio settings.');
         }
     };
 
@@ -420,9 +420,9 @@ export default function PronunciationPage() {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>发音纠错练习</h1>
+            <h1 className={styles.title}>Pronunciation Correction Practice</h1>
             <p className={styles.description}>
-                选择句子练习发音，点击加粗部分可以查看更多发音示例。
+                Select sentences to practice pronunciation. Click on the bold parts to see more pronunciation examples.
             </p>
 
             <div className={styles.sentenceList}>
@@ -433,28 +433,28 @@ export default function PronunciationPage() {
                                 {renderText(sentence.text, sentence.emphasis)}
                             </div>
                             <div className={styles.controls}>
-                                <button 
+                                <button
                                     className={styles.playButton}
                                     onClick={() => playEdgeTTS(sentence.text)}
                                 >
-                                    播放标准发音
+                                    Play Standard Pronunciation
                                 </button>
-                                <button 
+                                <button
                                     className={`${styles.recordButton} ${recordingIndex === index ? styles.recording : ''}`}
                                     onClick={() => recordingIndex === index ? stopRecording() : startRecording(index)}
                                 >
-                                    {recordingIndex === index ? '停止录音' : '开始录音'}
+                                    {recordingIndex === index ? 'Stop Recording' : 'Start Recording'}
                                 </button>
                             </div>
                         </div>
                         <div className={styles.translation}>{sentence.translation}</div>
                         <div className={styles.focus}>{sentence.focus}</div>
                         <div className={styles.context}>
-                            <span className={styles.label}>使用场景：</span>
+                            <span className={styles.label}>Usage Context: </span>
                             {sentence.context}
                         </div>
                         <div className={styles.formality}>
-                            <span className={styles.label}>正式程度：</span>
+                            <span className={styles.label}>Formality Level: </span>
                             {sentence.formality}
                         </div>
                         {recordings[index] && (
@@ -467,4 +467,4 @@ export default function PronunciationPage() {
             </div>
         </div>
     );
-} 
+}

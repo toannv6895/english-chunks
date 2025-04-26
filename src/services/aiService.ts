@@ -40,7 +40,7 @@ Target English Level: ${getEnglishLevelDescription(englishLevel)}
 Requirements:
 - The dialogue should be realistic and include 3-4 speakers
 - Each chunk should be a useful phrase or expression (not complete sentences)
-- Each chunk must include pronunciation, Chinese meaning, and suitable scenes
+- Each chunk must include pronunciation, Chinese meaning, Vietnamese meaning, and suitable scenes
 - Format all speakers in the dialogue as "Speaker: Content"
 - Adjust language difficulty according to the target English level
 - For lower levels (kindergarten/elementary), focus on basic daily expressions
@@ -53,8 +53,9 @@ Response Format:
         {
             "chunk": "useful English phrase or expression",
             "pronunciation": "IPA phonetic symbols",
-            "chinese_meaning": "中文含义",
-            "suitable_scenes": ["场景1", "场景2"]
+            "chinese_meaning": "English meaning in Chinese",
+            "vietnamese_meaning": "English meaning in Vietnamese",
+            "suitable_scenes": ["scene1", "scene2"]
         }
     ]
 }`;
@@ -103,12 +104,12 @@ const handleStreamResponse = async (
 
         const chunk = decoder.decode(value);
         const lines = chunk.split('\n');
-        
+
         for (const line of lines) {
             if (line.startsWith('data: ')) {
                 const data = line.slice(6);
                 if (data === '[DONE]') continue;
-                
+
                 try {
                     const parsed = JSON.parse(data);
                     let content = '';
@@ -130,7 +131,7 @@ const handleStreamResponse = async (
 };
 
 export const generateSceneContent = async (
-    scene: string, 
+    scene: string,
     config: AIConfig,
     onProgress: (dialogue: string) => void
 ): Promise<SceneResponse> => {
@@ -166,7 +167,7 @@ export const generateSceneContent = async (
 
         const data = await response.json();
         let content = '';
-        
+
         if (config.provider === 'openai') {
             content = data.choices[0]?.message?.content;
         } else {
@@ -178,7 +179,7 @@ export const generateSceneContent = async (
         }
 
         try {
-            // 清理响应内容，确保它是有效的JSON
+            // Clean response content to ensure it's valid JSON
             const cleanContent = content
                 .replace(/^```json\s*/m, '')
                 .replace(/\s*```\s*$/m, '')
@@ -186,21 +187,30 @@ export const generateSceneContent = async (
 
             const result = JSON.parse(cleanContent) as SceneResponse;
 
-            // 验证响应格式
+            // Validate response format
             if (!result.dialogue || !Array.isArray(result.chunks)) {
                 throw new Error('Invalid response format');
             }
 
-            // 格式化对话为Markdown
+            // Format dialogue as Markdown
             const formattedDialogue = result.dialogue
                 .split('\n')
                 .map(line => {
+                    line = line.trim();
+                    if (!line) return '';
+
                     if (line.includes(':')) {
-                        const [speaker, content] = line.split(':').map(part => part.trim());
-                        return `**${speaker}**: ${content}`;
+                        // Find the first colon that's not part of a URL
+                        const colonIndex = line.search(/(?<!https?):(?!\/\/)/);
+                        if (colonIndex > 0) {
+                            const speaker = line.substring(0, colonIndex).trim();
+                            const content = line.substring(colonIndex + 1).trim();
+                            return `**${speaker}**: ${content}`;
+                        }
                     }
                     return line;
                 })
+                .filter(line => line) // Remove empty lines
                 .join('\n\n');
 
             onProgress(formattedDialogue);
@@ -211,6 +221,7 @@ export const generateSceneContent = async (
                     chunk: chunk.chunk || '',
                     pronunciation: chunk.pronunciation || '',
                     chinese_meaning: chunk.chinese_meaning || '',
+                    vietnamese_meaning: chunk.vietnamese_meaning || '',
                     suitable_scenes: Array.isArray(chunk.suitable_scenes) ? chunk.suitable_scenes : [],
                 }))
             };
@@ -223,4 +234,4 @@ export const generateSceneContent = async (
         console.error('Error generating scene content:', error);
         throw error;
     }
-}; 
+};

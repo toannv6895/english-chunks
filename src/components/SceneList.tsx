@@ -22,7 +22,7 @@ const SceneList = () => {
 
     const handleSceneClick = async (sceneId: string) => {
         setSelectedScene(sceneId);
-        setAdditionalContext('');  // 清空附加信息
+        setAdditionalContext('');  // Clear additional information
         if (sceneId === 'custom') {
             return;
         }
@@ -30,7 +30,7 @@ const SceneList = () => {
         const savedSettings = localStorage.getItem('userSettings');
         if (!savedSettings) {
             router.push('/settings');
-            alert('请先配置API设置');
+            alert('Please configure API settings first');
             return;
         }
 
@@ -46,7 +46,7 @@ const SceneList = () => {
         const savedSettings = localStorage.getItem('userSettings');
         if (!savedSettings) {
             router.push('/settings');
-            alert('请先配置API设置');
+            alert('Please configure API settings first');
             return;
         }
 
@@ -69,7 +69,7 @@ const SceneList = () => {
         try {
             const savedSettings = localStorage.getItem('userSettings');
             if (!savedSettings) {
-                throw new Error('请先在设置中配置 API 信息');
+                throw new Error('Please configure API information in settings first');
             }
 
             const settings = JSON.parse(savedSettings);
@@ -84,7 +84,7 @@ const SceneList = () => {
             const scene = scenes.find(s => s.id === sceneId);
             if (!scene && !customPrompt) return;
 
-            // 构建完整的场景描述
+            // Build complete scene description
             let sceneDescription = customPrompt || scene!.title;
             if (additionalContext && sceneId !== 'custom') {
                 sceneDescription += ` (Additional context: ${additionalContext})`;
@@ -103,11 +103,11 @@ const SceneList = () => {
             setChunks(result.chunks);
             setProgress(100);
             setProcessingStep('idle');
-            setIsDialogueExpanded(false);
+            setIsDialogueExpanded(true);
 
         } catch (err) {
             console.error('Error generating scene content:', err);
-            setError(err instanceof Error ? err.message : '生成内容时出错');
+            setError(err instanceof Error ? err.message : 'Error generating content');
             setSelectedScene(null);
             setProcessingStep('idle');
         } finally {
@@ -116,22 +116,22 @@ const SceneList = () => {
     };
 
     const getLoadingMessage = () => {
-        return processingStep === 'generating' ? '正在生成内容...' : '';
+        return processingStep === 'generating' ? 'Generating content...' : '';
     };
 
     const getSceneInputPlaceholder = (sceneId: string) => {
         const scene = scenes.find(s => s.id === sceneId);
         if (!scene) return '';
-        
+
         switch (sceneId) {
             case 'custom':
-                return '请输入你想练习的具体场景，例如：在咖啡店点一杯拿铁';
+                return 'Please enter the specific scenario you want to practice, e.g.: ordering a latte at a coffee shop';
             case 'chat':
-                return '可以补充具体对象，例如：和同事、和老婆、和朋友等';
+                return 'You can add specific people, e.g.: with colleagues, with spouse, with friends, etc.';
             case 'interview':
-                return '可以补充具体职位，例如：Java程序员、产品经理、设计师等';
+                return 'You can add specific positions, e.g.: Java programmer, product manager, designer, etc.';
             default:
-                return `可以补充具体场景细节，丰富对话内容`;
+                return `You can add specific scene details to enrich the dialogue`;
         }
     };
 
@@ -165,7 +165,7 @@ const SceneList = () => {
                             setProgress(0);
                         }}
                     >
-                        返回场景列表
+                        Back to Scene List
                     </button>
 
                     <div className={styles.sceneInputContainer}>
@@ -191,7 +191,7 @@ const SceneList = () => {
                             onClick={handleSceneSubmit}
                             disabled={(selectedScene === 'custom' && !customSceneInput.trim()) || loading}
                         >
-                            生成对话
+                            Generate Dialogue
                         </button>
                     </div>
 
@@ -199,8 +199,8 @@ const SceneList = () => {
                         <div className={styles.loading}>
                             {getLoadingMessage()}
                             <div className={styles.progressContainer}>
-                                <div 
-                                    className={styles.progressBar} 
+                                <div
+                                    className={styles.progressBar}
                                     style={{ width: `${progress}%` }}
                                 />
                             </div>
@@ -211,17 +211,17 @@ const SceneList = () => {
                             )}
                         </div>
                     )}
-                    
+
                     {error && <div className={styles.error}>{error}</div>}
-                    
+
                     {dialogue && (
                         <>
                             <div className={styles.dialogueCollapse}>
-                                <div 
+                                <div
                                     className={styles.dialogueHeader}
                                     onClick={() => setIsDialogueExpanded(!isDialogueExpanded)}
                                 >
-                                    <span>原始对话{isDialogueExpanded ? ' (点击收起)' : ' (点击展开)'}</span>
+                                    <span>Original Dialogue{isDialogueExpanded ? ' (Click to collapse)' : ' (Click to expand)'}</span>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="20"
@@ -259,4 +259,4 @@ const SceneList = () => {
     );
 };
 
-export default SceneList; 
+export default SceneList;

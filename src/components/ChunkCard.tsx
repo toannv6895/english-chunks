@@ -16,31 +16,45 @@ const ChunkCard: React.FC<ChunkProps> = ({ chunk }) => {
         chunk: chunk.chunk || '',
         pronunciation: chunk.pronunciation || '',
         chinese_meaning: chunk.chinese_meaning || '',
+        vietnamese_meaning: chunk.vietnamese_meaning || '',
         suitable_scenes: Array.isArray(chunk.suitable_scenes) ? chunk.suitable_scenes : [],
     };
 
-    const playAudio = () => {
-        // 从localStorage获取设置
-        const savedSettings = localStorage.getItem('userSettings');
-        let voice = 'en-US-JennyNeural';
-        let speed = 1.0;
+    // Get user settings
+    const getUserSettings = () => {
+        // Default settings
+        const defaultSettings = {
+            voice: 'en-US-JennyNeural',
+            speed: 1.0,
+            motherLanguage: 'chinese'
+        };
 
+        // Get settings from localStorage
+        const savedSettings = localStorage.getItem('userSettings');
         if (savedSettings) {
             try {
                 const settings = JSON.parse(savedSettings);
-                voice = settings.voice || voice;
-                speed = settings.speed || speed;
+                return {
+                    voice: settings.voice || defaultSettings.voice,
+                    speed: settings.speed || defaultSettings.speed,
+                    motherLanguage: settings.motherLanguage || defaultSettings.motherLanguage
+                };
             } catch (error) {
                 console.error('Error parsing settings:', error);
             }
         }
+        return defaultSettings;
+    };
 
+    const settings = getUserSettings();
+
+    const playAudio = () => {
         const utterance = new SpeechSynthesisUtterance(safeChunk.chunk);
         utterance.lang = 'en-US';
-        utterance.rate = speed;
+        utterance.rate = settings.speed;
         utterance.pitch = 1;
         utterance.volume = 1;
-        utterance.voice = window.speechSynthesis.getVoices().find(v => v.name === voice) || null;
+        utterance.voice = window.speechSynthesis.getVoices().find(v => v.name === settings.voice) || null;
         window.speechSynthesis.speak(utterance);
     };
 
@@ -50,7 +64,11 @@ const ChunkCard: React.FC<ChunkProps> = ({ chunk }) => {
                 <div className={styles.cardContent} onClick={playAudio}>
                     <h3 className={styles.chunk}>{safeChunk.chunk}</h3>
                     <p className={styles.pronunciation}>{safeChunk.pronunciation}</p>
-                    <p className={styles.meaning}>{safeChunk.chinese_meaning}</p>
+                    <p className={styles.meaning}>
+                        {settings.motherLanguage === 'vietnamese'
+                            ? safeChunk.vietnamese_meaning || safeChunk.chinese_meaning
+                            : safeChunk.chinese_meaning}
+                    </p>
                     {safeChunk.suitable_scenes.length > 0 && (
                         <div className={styles.scenes}>
                             {safeChunk.suitable_scenes.map((scene, index) => (
@@ -62,7 +80,7 @@ const ChunkCard: React.FC<ChunkProps> = ({ chunk }) => {
                     )}
                 </div>
                 <div className={styles.cardActions}>
-                    <button 
+                    <button
                         className={styles.actionButton}
                         onClick={(e) => {
                             e.stopPropagation();
@@ -106,4 +124,4 @@ const ChunkCard: React.FC<ChunkProps> = ({ chunk }) => {
     );
 };
 
-export default ChunkCard; 
+export default ChunkCard;

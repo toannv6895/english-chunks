@@ -20,7 +20,7 @@ export default function LevelPage({ params }: { params: { levelId: string } }) {
   const router = useRouter();
   const levelId = parseInt(params.levelId);
   const level = levels.find(l => l.id === levelId);
-  
+
   const [progress, setProgress] = useState<GameProgress>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('squidGameProgress');
@@ -58,11 +58,11 @@ export default function LevelPage({ params }: { params: { levelId: string } }) {
         [levelId]: earnedStars
       }
     };
-    
+
     if (earnedStars === 3 && levelId === progress.currentLevel) {
       newProgress.currentLevel = Math.min(levels.length - 1, progress.currentLevel + 1);
     }
-    
+
     setProgress(newProgress);
     localStorage.setItem('squidGameProgress', JSON.stringify(newProgress));
   };
@@ -89,12 +89,12 @@ export default function LevelPage({ params }: { params: { levelId: string } }) {
           />
         )}
       </div>
-      <button 
+      <button
         className={styles.backButton}
         onClick={() => router.push('/squid-game')}
       >
-        返回关卡选择
+        Back to Level Selection
       </button>
     </div>
   );
-} 
+}

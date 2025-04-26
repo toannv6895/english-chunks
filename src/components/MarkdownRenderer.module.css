@@ -1,8 +1,9 @@
 .markdown {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.875rem;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
     line-height: 1.7;
     color: #1f2937;
+    white-space: pre-wrap;
 }
 
 .markdown h1,
@@ -65,4 +66,4 @@
 
 .markdown a:hover {
     text-decoration: underline;
-} 
+}

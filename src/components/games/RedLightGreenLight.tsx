@@ -9,10 +9,10 @@ interface RedLightGreenLightProps {
 const RedLightGreenLight: React.FC<RedLightGreenLightProps> = ({ onComplete, currentStars }) => {
   return (
     <div className={styles.container}>
-      <h2>红绿灯游戏</h2>
+      <h2>Red Light Green Light</h2>
       <p>Coming soon...</p>
     </div>
   );
 };
 
-export default RedLightGreenLight; 
+export default RedLightGreenLight;

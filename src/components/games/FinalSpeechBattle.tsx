@@ -9,10 +9,10 @@ interface FinalSpeechBattleProps {
 const FinalSpeechBattle: React.FC<FinalSpeechBattleProps> = ({ onComplete, currentStars }) => {
   return (
     <div className={styles.container}>
-      <h2>最终演讲对决</h2>
+      <h2>Final Speech Battle</h2>
       <p>Coming soon...</p>
     </div>
   );
 };
 
-export default FinalSpeechBattle; 
+export default FinalSpeechBattle;
