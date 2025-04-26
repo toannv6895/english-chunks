@@ -1,0 +1,62 @@
+.audioPlayer {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.playButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.playButton:hover {
+    background-color: #1d4ed8;
+    transform: scale(1.05);
+}
+
+.pauseButton {
+    background-color: #dc2626;
+}
+
+.pauseButton:hover {
+    background-color: #b91c1c;
+}
+
+.loading {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.loading:hover {
+    background-color: #9ca3af;
+    transform: none;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    stroke: white;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.error {
+    color: #dc2626;
+    margin-left: 10px;
+    font-size: 0.875rem;
+}

@@ -51,14 +51,32 @@ export class SpeechUtils {
     private static async playBrowserTTS(text: string): Promise<void> {
         if (!isBrowser) return;
 
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+
         const settings = await this.getSettings();
-        const utterance = new SpeechSynthesisUtterance(text.replace(/\*\*/g, ''));
-        utterance.lang = 'en-US';
-        utterance.rate = settings.speed;
-        utterance.pitch = 1;
-        utterance.volume = 1;
-        utterance.voice = window.speechSynthesis.getVoices().find(v => v.name === settings.voice) || null;
-        window.speechSynthesis.speak(utterance);
+
+        // Clean the text for better speech synthesis
+        const cleanedText = text
+            .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers
+            .replace(/\n\n/g, '. ') // Replace double line breaks with periods
+            .replace(/\n/g, ' ') // Replace single line breaks with spaces
+            .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
+            .trim();
+
+        // Split text into sentences for more natural speech
+        const sentences = cleanedText.match(/[^.!?]+[.!?]+/g) || [cleanedText];
+
+        // Create an utterance for each sentence
+        sentences.forEach(sentence => {
+            const utterance = new SpeechSynthesisUtterance(sentence.trim());
+            utterance.lang = 'en-US';
+            utterance.rate = settings.speed;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            utterance.voice = window.speechSynthesis.getVoices().find(v => v.name === settings.voice) || null;
+            window.speechSynthesis.speak(utterance);
+        });
     }
 
     private static async playOpenAITTS(text: string): Promise<void> {
@@ -70,6 +88,20 @@ export class SpeechUtils {
         }
 
         try {
+            // Clean the text for better speech synthesis
+            const cleanedText = text
+                .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers
+                .replace(/\n\n/g, '. ') // Replace double line breaks with periods
+                .replace(/\n/g, ' ') // Replace single line breaks with spaces
+                .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
+                .trim();
+
+            // Limit text length to avoid API issues (OpenAI has a 4096 token limit)
+            const maxLength = 4000;
+            const truncatedText = cleanedText.length > maxLength
+                ? cleanedText.substring(0, maxLength) + '...'
+                : cleanedText;
+
             const response = await fetch(settings.apiUrl, {
                 method: 'POST',
                 headers: {
@@ -78,7 +110,7 @@ export class SpeechUtils {
                 },
                 body: JSON.stringify({
                     model: 'tts-1',
-                    input: text.replace(/\*\*/g, ''),
+                    input: truncatedText,
                     voice: 'alloy'
                 })
             });
@@ -109,8 +141,17 @@ export class SpeechUtils {
             }
         } catch (error) {
             console.error('Error playing TTS:', error);
-            // 如果 OpenAI TTS 失败，回退到浏览器 TTS
+            // If OpenAI TTS fails, fall back to browser TTS
             await this.playBrowserTTS(text);
         }
     }
-} 
+
+    public static stopTTS(): void {
+        if (!isBrowser) return;
+
+        // Stop browser speech synthesis
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+        }
+    }
+}

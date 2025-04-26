@@ -8,6 +8,7 @@ import { StoredDialogue } from '@/types/dialogue';
 import ChunkCard from './ChunkCard';
 import MarkdownRenderer from './MarkdownRenderer';
 import TopicSavedDialogues from './TopicSavedDialogues';
+import DialogueAudioPlayer from './DialogueAudioPlayer';
 import styles from './TopicScene.module.css';
 
 interface TopicSceneProps {
@@ -283,28 +284,38 @@ const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
                     </div>
 
                     <div className={styles.dialogueCollapse}>
-                        <div
-                            className={styles.dialogueHeader}
-                            onClick={() => setIsDialogueExpanded(!isDialogueExpanded)}
-                        >
-                            <span>Original Dialogue{isDialogueExpanded ? ' (Click to collapse)' : ' (Click to expand)'}</span>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="20"
-                                height="20"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                style={{
-                                    transform: isDialogueExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-                                    transition: 'transform 0.3s ease'
-                                }}
+                        <div className={styles.dialogueHeader}>
+                            <div className={styles.dialogueHeaderLeft}>
+                                <DialogueAudioPlayer dialogue={dialogue} />
+                                <span
+                                    className={styles.dialogueTitle}
+                                    onClick={() => setIsDialogueExpanded(!isDialogueExpanded)}
+                                >
+                                    Original Dialogue{isDialogueExpanded ? ' (Click to collapse)' : ' (Click to expand)'}
+                                </span>
+                            </div>
+                            <div
+                                className={styles.collapseIcon}
+                                onClick={() => setIsDialogueExpanded(!isDialogueExpanded)}
                             >
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    style={{
+                                        transform: isDialogueExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                                        transition: 'transform 0.3s ease'
+                                    }}
+                                >
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
                         </div>
                         <div className={`${styles.dialogueContent} ${isDialogueExpanded ? styles.expanded : ''}`}>
                             <MarkdownRenderer content={dialogue} />
