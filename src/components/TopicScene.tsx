@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { scenes } from '@/data/scenes';
 import { generateSceneContent } from '@/services/aiService';
 import { checkAndRedirectAPISettings } from '@/utils/settingsHelper';
 import { saveDialogue, getStoredDialogues } from '@/services/dialogueStorageService';
 import { StoredDialogue } from '@/types/dialogue';
+import { Chunk } from '@/services/chunkService';
 import ChunkCard from './ChunkCard';
 import MarkdownRenderer from './MarkdownRenderer';
 import TopicSavedDialogues from './TopicSavedDialogues';
+import DialogueAudioPlayer from './DialogueAudioPlayer';
+import TextSelectionHandler from './TextSelectionHandler';
+import CustomChunkModal from './CustomChunkModal';
 import styles from './TopicScene.module.css';
 
 interface TopicSceneProps {
@@ -17,7 +21,7 @@ interface TopicSceneProps {
 const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const [chunks, setChunks] = useState<any[]>([]);
+    const [chunks, setChunks] = useState<Chunk[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [dialogue, setDialogue] = useState<string>('');
@@ -26,6 +30,13 @@ const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
     const [additionalContext, setAdditionalContext] = useState('');
     const [isDialogueExpanded, setIsDialogueExpanded] = useState(true);
     const [currentDialogueId, setCurrentDialogueId] = useState<string | null>(null);
+
+    // Text selection and custom chunk state
+    const dialogueContentRef = useRef<HTMLDivElement>(null);
+    const [selectedText, setSelectedText] = useState<string>('');
+    const [isChunkModalOpen, setIsChunkModalOpen] = useState(false);
+    const [editingChunk, setEditingChunk] = useState<Chunk | undefined>(undefined);
+    const [isEditing, setIsEditing] = useState(false);
 
     const scene = scenes.find(s => s.id === sceneId);
 
@@ -209,6 +220,81 @@ const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
         setProgress(100);
     };
 
+    // Function to handle text selection for custom chunk creation
+    const handleTextSelection = (text: string) => {
+        setSelectedText(text);
+        setIsChunkModalOpen(true);
+    };
+
+    // Function to add a custom chunk
+    const handleAddCustomChunk = (newChunk: Chunk) => {
+        let updatedChunks: Chunk[];
+
+        if (isEditing && editingChunk) {
+            // If editing, replace the existing chunk
+            updatedChunks = chunks.map(c =>
+                c === editingChunk ? newChunk : c
+            );
+        } else {
+            // If adding new, append to the array
+            updatedChunks = [...chunks, newChunk];
+        }
+
+        setChunks(updatedChunks);
+
+        // Reset editing state
+        setIsEditing(false);
+        setEditingChunk(undefined);
+
+        // If we have a current dialogue ID, update the stored dialogue
+        if (currentDialogueId) {
+            updateStoredDialogue(updatedChunks);
+        }
+    };
+
+    // Function to handle chunk deletion
+    const handleDeleteChunk = (chunkToDelete: Chunk) => {
+        // Filter out the chunk to delete
+        const updatedChunks = chunks.filter(c => c !== chunkToDelete);
+        setChunks(updatedChunks);
+
+        // If we have a current dialogue ID, update the stored dialogue
+        if (currentDialogueId) {
+            updateStoredDialogue(updatedChunks);
+        }
+    };
+
+    // Function to handle chunk editing
+    const handleEditChunk = (chunkToEdit: Chunk) => {
+        setEditingChunk(chunkToEdit);
+        setIsEditing(true);
+        setIsChunkModalOpen(true);
+    };
+
+    // Helper function to update the stored dialogue
+    const updateStoredDialogue = (updatedChunks: Chunk[]) => {
+        const storedDialogues = getStoredDialogues();
+        const currentDialogue = storedDialogues.find(d => d.id === currentDialogueId);
+
+        if (currentDialogue) {
+            const updatedDialogue: StoredDialogue = {
+                ...currentDialogue,
+                chunks: updatedChunks
+            };
+
+            saveDialogue(updatedDialogue);
+
+            // Notify other components about the change
+            try {
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'storedDialogues'
+                }));
+            } catch (e) {
+                window.dispatchEvent(new Event('storage'));
+            }
+        }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.topicHeader}>
@@ -283,37 +369,73 @@ const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
                     </div>
 
                     <div className={styles.dialogueCollapse}>
-                        <div
-                            className={styles.dialogueHeader}
-                            onClick={() => setIsDialogueExpanded(!isDialogueExpanded)}
-                        >
-                            <span>Original Dialogue{isDialogueExpanded ? ' (Click to collapse)' : ' (Click to expand)'}</span>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="20"
-                                height="20"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                style={{
-                                    transform: isDialogueExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-                                    transition: 'transform 0.3s ease'
-                                }}
+                        <div className={styles.dialogueHeader}>
+                            <div className={styles.dialogueHeaderLeft}>
+                                <DialogueAudioPlayer dialogue={dialogue} />
+                                <span
+                                    className={styles.dialogueTitle}
+                                    onClick={() => setIsDialogueExpanded(!isDialogueExpanded)}
+                                >
+                                    Original Dialogue{isDialogueExpanded ? ' (Click to collapse)' : ' (Click to expand)'}
+                                </span>
+                            </div>
+                            <div
+                                className={styles.collapseIcon}
+                                onClick={() => setIsDialogueExpanded(!isDialogueExpanded)}
                             >
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    style={{
+                                        transform: isDialogueExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                                        transition: 'transform 0.3s ease'
+                                    }}
+                                >
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
                         </div>
-                        <div className={`${styles.dialogueContent} ${isDialogueExpanded ? styles.expanded : ''}`}>
+                        <div
+                            ref={dialogueContentRef}
+                            className={`${styles.dialogueContent} ${isDialogueExpanded ? styles.expanded : ''}`}
+                        >
                             <MarkdownRenderer content={dialogue} />
+                            <TextSelectionHandler
+                                containerRef={dialogueContentRef}
+                                onAddChunk={handleTextSelection}
+                            />
                         </div>
+
+                        <CustomChunkModal
+                            isOpen={isChunkModalOpen}
+                            onClose={() => {
+                                setIsChunkModalOpen(false);
+                                setIsEditing(false);
+                                setEditingChunk(undefined);
+                            }}
+                            onSave={handleAddCustomChunk}
+                            initialText={selectedText}
+                            sceneId={sceneId}
+                            editingChunk={editingChunk}
+                            isEditing={isEditing}
+                        />
                     </div>
                     {chunks.length > 0 && (
                         <div className={styles.chunksGrid}>
                             {chunks.map((chunk, index) => (
-                                <ChunkCard key={index} chunk={chunk} />
+                                <ChunkCard
+                                    key={index}
+                                    chunk={chunk}
+                                    onEdit={handleEditChunk}
+                                    onDelete={handleDeleteChunk}
+                                />
                             ))}
                         </div>
                     )}

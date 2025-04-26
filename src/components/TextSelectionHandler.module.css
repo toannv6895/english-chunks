@@ -1,0 +1,36 @@
+.selectionButtonContainer {
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-in-out;
+    user-select: none;
+}
+
+.selectionButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.selectionButton:hover {
+    background-color: #1d4ed8;
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 10px);
+    }
+}
