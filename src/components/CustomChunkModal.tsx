@@ -9,6 +9,8 @@ interface CustomChunkModalProps {
     onSave: (chunk: Chunk) => void;
     initialText: string;
     sceneId: string;
+    editingChunk?: Chunk; // Optional chunk to edit
+    isEditing?: boolean; // Flag to indicate if we're editing an existing chunk
 }
 
 const CustomChunkModal: React.FC<CustomChunkModalProps> = ({
@@ -16,7 +18,9 @@ const CustomChunkModal: React.FC<CustomChunkModalProps> = ({
     onClose,
     onSave,
     initialText,
-    sceneId
+    sceneId,
+    editingChunk,
+    isEditing = false
 }) => {
     const [chunk, setChunk] = useState<Chunk>({
         chunk: '',
@@ -29,19 +33,27 @@ const CustomChunkModal: React.FC<CustomChunkModalProps> = ({
     const [isGenerating, setIsGenerating] = useState(false);
     const [generationError, setGenerationError] = useState<string | null>(null);
 
-    // Reset form when modal opens with new text
+    // Reset form when modal opens with new text or editing chunk
     useEffect(() => {
-        if (isOpen && initialText) {
-            const sceneName = getSceneName(sceneId);
-            setChunk({
-                chunk: initialText,
-                pronunciation: '',
-                chinese_meaning: '',
-                vietnamese_meaning: '',
-                suitable_scenes: sceneName ? [sceneName] : []
-            });
+        if (isOpen) {
+            if (isEditing && editingChunk) {
+                // If editing an existing chunk, use its values
+                setChunk({
+                    ...editingChunk
+                });
+            } else if (initialText) {
+                // If creating a new chunk from selected text
+                const sceneName = getSceneName(sceneId);
+                setChunk({
+                    chunk: initialText,
+                    pronunciation: '',
+                    chinese_meaning: '',
+                    vietnamese_meaning: '',
+                    suitable_scenes: sceneName ? [sceneName] : []
+                });
+            }
         }
-    }, [isOpen, initialText, sceneId]);
+    }, [isOpen, initialText, sceneId, isEditing, editingChunk]);
 
     const getSceneName = (id: string): string => {
         // Map scene IDs to more readable names
@@ -178,7 +190,7 @@ const CustomChunkModal: React.FC<CustomChunkModalProps> = ({
         <div className={styles.modalOverlay}>
             <div className={styles.modal}>
                 <div className={styles.modalHeader}>
-                    <h2>Add Custom Chunk</h2>
+                    <h2>{isEditing ? 'Edit Chunk' : 'Add Custom Chunk'}</h2>
                     <button className={styles.closeButton} onClick={onClose}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -279,7 +291,7 @@ const CustomChunkModal: React.FC<CustomChunkModalProps> = ({
                             Cancel
                         </button>
                         <button type="submit" className={styles.saveButton}>
-                            Save Chunk
+                            {isEditing ? 'Update Chunk' : 'Save Chunk'}
                         </button>
                     </div>
                 </form>

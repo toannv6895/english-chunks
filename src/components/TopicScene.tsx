@@ -35,6 +35,8 @@ const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
     const dialogueContentRef = useRef<HTMLDivElement>(null);
     const [selectedText, setSelectedText] = useState<string>('');
     const [isChunkModalOpen, setIsChunkModalOpen] = useState(false);
+    const [editingChunk, setEditingChunk] = useState<Chunk | undefined>(undefined);
+    const [isEditing, setIsEditing] = useState(false);
 
     const scene = scenes.find(s => s.id === sceneId);
 
@@ -226,31 +228,69 @@ const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
 
     // Function to add a custom chunk
     const handleAddCustomChunk = (newChunk: Chunk) => {
-        // Add the new chunk to the chunks array
-        const updatedChunks = [...chunks, newChunk];
+        let updatedChunks: Chunk[];
+
+        if (isEditing && editingChunk) {
+            // If editing, replace the existing chunk
+            updatedChunks = chunks.map(c =>
+                c === editingChunk ? newChunk : c
+            );
+        } else {
+            // If adding new, append to the array
+            updatedChunks = [...chunks, newChunk];
+        }
+
+        setChunks(updatedChunks);
+
+        // Reset editing state
+        setIsEditing(false);
+        setEditingChunk(undefined);
+
+        // If we have a current dialogue ID, update the stored dialogue
+        if (currentDialogueId) {
+            updateStoredDialogue(updatedChunks);
+        }
+    };
+
+    // Function to handle chunk deletion
+    const handleDeleteChunk = (chunkToDelete: Chunk) => {
+        // Filter out the chunk to delete
+        const updatedChunks = chunks.filter(c => c !== chunkToDelete);
         setChunks(updatedChunks);
 
         // If we have a current dialogue ID, update the stored dialogue
         if (currentDialogueId) {
-            const storedDialogues = getStoredDialogues();
-            const currentDialogue = storedDialogues.find(d => d.id === currentDialogueId);
+            updateStoredDialogue(updatedChunks);
+        }
+    };
 
-            if (currentDialogue) {
-                const updatedDialogue: StoredDialogue = {
-                    ...currentDialogue,
-                    chunks: updatedChunks
-                };
+    // Function to handle chunk editing
+    const handleEditChunk = (chunkToEdit: Chunk) => {
+        setEditingChunk(chunkToEdit);
+        setIsEditing(true);
+        setIsChunkModalOpen(true);
+    };
 
-                saveDialogue(updatedDialogue);
+    // Helper function to update the stored dialogue
+    const updateStoredDialogue = (updatedChunks: Chunk[]) => {
+        const storedDialogues = getStoredDialogues();
+        const currentDialogue = storedDialogues.find(d => d.id === currentDialogueId);
 
-                // Notify other components about the change
-                try {
-                    window.dispatchEvent(new StorageEvent('storage', {
-                        key: 'storedDialogues'
-                    }));
-                } catch (e) {
-                    window.dispatchEvent(new Event('storage'));
-                }
+        if (currentDialogue) {
+            const updatedDialogue: StoredDialogue = {
+                ...currentDialogue,
+                chunks: updatedChunks
+            };
+
+            saveDialogue(updatedDialogue);
+
+            // Notify other components about the change
+            try {
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'storedDialogues'
+                }));
+            } catch (e) {
+                window.dispatchEvent(new Event('storage'));
             }
         }
     };
@@ -375,16 +415,27 @@ const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
 
                         <CustomChunkModal
                             isOpen={isChunkModalOpen}
-                            onClose={() => setIsChunkModalOpen(false)}
+                            onClose={() => {
+                                setIsChunkModalOpen(false);
+                                setIsEditing(false);
+                                setEditingChunk(undefined);
+                            }}
                             onSave={handleAddCustomChunk}
                             initialText={selectedText}
                             sceneId={sceneId}
+                            editingChunk={editingChunk}
+                            isEditing={isEditing}
                         />
                     </div>
                     {chunks.length > 0 && (
                         <div className={styles.chunksGrid}>
                             {chunks.map((chunk, index) => (
-                                <ChunkCard key={index} chunk={chunk} />
+                                <ChunkCard
+                                    key={index}
+                                    chunk={chunk}
+                                    onEdit={handleEditChunk}
+                                    onDelete={handleDeleteChunk}
+                                />
                             ))}
                         </div>
                     )}
