@@ -206,9 +206,16 @@
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
+    position: relative;
 }
 
 .dialogueContent.expanded {
     max-height: 2000px;
     overflow-y: auto;
+}
+
+/* Style for selected text */
+.dialogueContent ::selection {
+    background-color: #2563eb;
+    color: white;
 }

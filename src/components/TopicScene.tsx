@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { scenes } from '@/data/scenes';
 import { generateSceneContent } from '@/services/aiService';
 import { checkAndRedirectAPISettings } from '@/utils/settingsHelper';
 import { saveDialogue, getStoredDialogues } from '@/services/dialogueStorageService';
 import { StoredDialogue } from '@/types/dialogue';
+import { Chunk } from '@/services/chunkService';
 import ChunkCard from './ChunkCard';
 import MarkdownRenderer from './MarkdownRenderer';
 import TopicSavedDialogues from './TopicSavedDialogues';
 import DialogueAudioPlayer from './DialogueAudioPlayer';
+import TextSelectionHandler from './TextSelectionHandler';
+import CustomChunkModal from './CustomChunkModal';
 import styles from './TopicScene.module.css';
 
 interface TopicSceneProps {
@@ -18,7 +21,7 @@ interface TopicSceneProps {
 const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const [chunks, setChunks] = useState<any[]>([]);
+    const [chunks, setChunks] = useState<Chunk[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [dialogue, setDialogue] = useState<string>('');
@@ -27,6 +30,11 @@ const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
     const [additionalContext, setAdditionalContext] = useState('');
     const [isDialogueExpanded, setIsDialogueExpanded] = useState(true);
     const [currentDialogueId, setCurrentDialogueId] = useState<string | null>(null);
+
+    // Text selection and custom chunk state
+    const dialogueContentRef = useRef<HTMLDivElement>(null);
+    const [selectedText, setSelectedText] = useState<string>('');
+    const [isChunkModalOpen, setIsChunkModalOpen] = useState(false);
 
     const scene = scenes.find(s => s.id === sceneId);
 
@@ -210,6 +218,43 @@ const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
         setProgress(100);
     };
 
+    // Function to handle text selection for custom chunk creation
+    const handleTextSelection = (text: string) => {
+        setSelectedText(text);
+        setIsChunkModalOpen(true);
+    };
+
+    // Function to add a custom chunk
+    const handleAddCustomChunk = (newChunk: Chunk) => {
+        // Add the new chunk to the chunks array
+        const updatedChunks = [...chunks, newChunk];
+        setChunks(updatedChunks);
+
+        // If we have a current dialogue ID, update the stored dialogue
+        if (currentDialogueId) {
+            const storedDialogues = getStoredDialogues();
+            const currentDialogue = storedDialogues.find(d => d.id === currentDialogueId);
+
+            if (currentDialogue) {
+                const updatedDialogue: StoredDialogue = {
+                    ...currentDialogue,
+                    chunks: updatedChunks
+                };
+
+                saveDialogue(updatedDialogue);
+
+                // Notify other components about the change
+                try {
+                    window.dispatchEvent(new StorageEvent('storage', {
+                        key: 'storedDialogues'
+                    }));
+                } catch (e) {
+                    window.dispatchEvent(new Event('storage'));
+                }
+            }
+        }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.topicHeader}>
@@ -317,9 +362,24 @@ const TopicScene: React.FC<TopicSceneProps> = ({ sceneId }) => {
                                 </svg>
                             </div>
                         </div>
-                        <div className={`${styles.dialogueContent} ${isDialogueExpanded ? styles.expanded : ''}`}>
+                        <div
+                            ref={dialogueContentRef}
+                            className={`${styles.dialogueContent} ${isDialogueExpanded ? styles.expanded : ''}`}
+                        >
                             <MarkdownRenderer content={dialogue} />
+                            <TextSelectionHandler
+                                containerRef={dialogueContentRef}
+                                onAddChunk={handleTextSelection}
+                            />
                         </div>
+
+                        <CustomChunkModal
+                            isOpen={isChunkModalOpen}
+                            onClose={() => setIsChunkModalOpen(false)}
+                            onSave={handleAddCustomChunk}
+                            initialText={selectedText}
+                            sceneId={sceneId}
+                        />
                     </div>
                     {chunks.length > 0 && (
                         <div className={styles.chunksGrid}>
