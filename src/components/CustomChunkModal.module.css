@@ -132,3 +132,55 @@
 .saveButton:hover {
     background-color: #1d4ed8;
 }
+
+.autoGenerateContainer {
+    padding: 0 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.autoGenerateButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.autoGenerateButton:hover:not(:disabled) {
+    background-color: #059669;
+}
+
+.autoGenerateButton:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    width: 16px;
+    height: 16px;
+    stroke: white;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.errorText {
+    color: #ef4444;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+}

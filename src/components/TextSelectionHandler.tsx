@@ -39,7 +39,7 @@ const TextSelectionHandler: React.FC<TextSelectionHandlerProps> = ({ containerRe
             if (selectedText) {
                 const range = selObj.getRangeAt(0);
                 const rect = range.getBoundingClientRect();
-                
+
                 // Position the button at the end of the selection
                 setSelection({
                     text: selectedText,
@@ -85,22 +85,27 @@ const TextSelectionHandler: React.FC<TextSelectionHandlerProps> = ({ containerRe
     if (!selection) return null;
 
     return (
-        <div 
+        <div
             ref={buttonRef}
-            className={styles.selectionButton}
+            className={styles.selectionButtonContainer}
             style={{
                 position: 'fixed',
                 left: `${selection.x}px`,
                 top: `${selection.y}px`,
                 transform: 'translate(-50%, 10px)'
             }}
-            onClick={handleAddChunk}
         >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            <span>Add Chunk</span>
+            <button
+                className={styles.selectionButton}
+                onClick={handleAddChunk}
+                title="Add Custom Chunk"
+                aria-label="Add Custom Chunk"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </button>
         </div>
     );
 };
