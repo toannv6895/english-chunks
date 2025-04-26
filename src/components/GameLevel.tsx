@@ -11,7 +11,7 @@ interface GameLevelProps {
 
 const GameLevel: React.FC<GameLevelProps> = ({ level, isLocked, onClick, earnedStars }) => {
   return (
-    <div 
+    <div
       className={`${styles.levelCard} ${isLocked ? styles.locked : ''}`}
       onClick={onClick}
     >
@@ -19,10 +19,10 @@ const GameLevel: React.FC<GameLevelProps> = ({ level, isLocked, onClick, earnedS
       <h3 className={styles.levelName}>{level.name}</h3>
       <p className={styles.description}>{level.description}</p>
       <div className={styles.stars}>
-        <div>需要 {level.minStars} ⭐</div>
+        <div>Required: {level.minStars} ⭐</div>
         {earnedStars > 0 && (
           <div className={styles.earnedStars}>
-            已获得 {earnedStars} ⭐
+            Earned: {earnedStars} ⭐
           </div>
         )}
       </div>
@@ -31,4 +31,4 @@ const GameLevel: React.FC<GameLevelProps> = ({ level, isLocked, onClick, earnedS
   );
 };
 
-export default GameLevel; 
+export default GameLevel;

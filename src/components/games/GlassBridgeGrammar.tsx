@@ -9,10 +9,10 @@ interface GlassBridgeGrammarProps {
 const GlassBridgeGrammar: React.FC<GlassBridgeGrammarProps> = ({ onComplete, currentStars }) => {
   return (
     <div className={styles.container}>
-      <h2>玻璃桥游戏</h2>
+      <h2>Glass Bridge Grammar</h2>
       <p>Coming soon...</p>
     </div>
   );
 };
 
-export default GlassBridgeGrammar; 
+export default GlassBridgeGrammar;

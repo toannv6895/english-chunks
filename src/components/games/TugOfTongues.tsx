@@ -9,10 +9,10 @@ interface TugOfTonguesProps {
 const TugOfTongues: React.FC<TugOfTonguesProps> = ({ onComplete, currentStars }) => {
   return (
     <div className={styles.container}>
-      <h2>拔河游戏</h2>
+      <h2>Tug of Tongues</h2>
       <p>Coming soon...</p>
     </div>
   );
 };
 
-export default TugOfTongues; 
+export default TugOfTongues;

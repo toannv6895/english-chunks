@@ -43,7 +43,7 @@ export default function SquidGamePage() {
     <div className={styles.pageContainer}>
       <div className={styles.backgroundImage} />
       <div className={styles.content}>
-        <div className={styles.totalStars}>总星星数: {progress.stars} ⭐</div>
+        <div className={styles.totalStars}>Total Stars: {progress.stars} ⭐</div>
         <div className={styles.levelGrid}>
           {levels.map((level, index) => (
             <GameLevel
@@ -58,4 +58,4 @@ export default function SquidGamePage() {
       </div>
     </div>
   );
-} 
+}

@@ -187,7 +187,7 @@
 }
 
 .dialogueContent.expanded {
-    max-height: 500px;
+    max-height: 2000px;
     overflow-y: auto;
 }
 
@@ -230,4 +230,4 @@
 .generateButton:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-} 
+}

@@ -6,8 +6,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "英语块 - 轻松学习地道英语表达",
-  description: "通过学习英语表达块，提升你的英语口语水平",
+  title: "English Chunks - Learn Authentic English Expressions Easily",
+  description: "Improve your English speaking skills by learning English expression chunks",
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh">
+    <html lang="en">
       <body className={inter.className}>
         <Navbar />
         {children}

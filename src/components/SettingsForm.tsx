@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './SettingsForm.module.css';
 
-// 定义设置的类型
+// Define settings types
 interface Settings {
     ai: {
         provider: 'openai' | 'gemini';
@@ -14,6 +14,7 @@ interface Settings {
     englishLevel: string;
     voice: string;
     speed: number;
+    motherLanguage: 'chinese' | 'vietnamese';
 }
 
 interface OpenAISpeechSettings {
@@ -21,29 +22,30 @@ interface OpenAISpeechSettings {
     apiKey: string;
 }
 
-// 默认设置
+// Default settings
 const defaultSettings: Settings = {
     ai: {
         provider: 'openai',
         apiKey: '',
-        apiUrl: 'https://api-proxy.me/openai',
+        apiUrl: 'https://api.openai.com/',// 'https://api-proxy.me/openai',
         modelName: 'gpt-4o',
     },
     englishLevel: 'elementary',
     voice: 'en-US-JennyNeural',
     speed: 1.0,
+    motherLanguage: 'chinese',
 };
 
-// 英语等级选项
+// English level options
 const englishLevels = [
-    { value: 'kindergarten', label: '英语幼儿园' },
-    { value: 'elementary', label: '英语小学生' },
-    { value: 'junior', label: '英语初中生' },
-    { value: 'university', label: '英语大学生' },
-    { value: 'postdoc', label: '英语博士后' },
+    { value: 'kindergarten', label: 'Kindergarten English' },
+    { value: 'elementary', label: 'Elementary School English' },
+    { value: 'junior', label: 'Junior High School English' },
+    { value: 'university', label: 'University English' },
+    { value: 'postdoc', label: 'Post-doctoral English' },
 ];
 
-// Edge TTS 音色列表
+// Edge TTS voice list
 const voices = [
     'en-US-JennyNeural',
     'en-US-GuyNeural',
@@ -55,6 +57,12 @@ const voices = [
     'en-CA-LiamNeural',
 ];
 
+// Mother language options
+const motherLanguages = [
+    { value: 'chinese', label: 'Chinese (中文)' },
+    { value: 'vietnamese', label: 'Vietnamese (Tiếng Việt)' },
+];
+
 const SettingsForm = () => {
     const [settings, setSettings] = useState<Settings>(defaultSettings);
     const [message, setMessage] = useState('');
@@ -63,7 +71,7 @@ const SettingsForm = () => {
         apiKey: ''
     });
 
-    // 加载设置
+    // Load settings
     useEffect(() => {
         if (typeof window === 'undefined') return;
 
@@ -95,24 +103,24 @@ const SettingsForm = () => {
         }
     }, []);
 
-    // 保存设置
+    // Save settings
     const saveSettings = () => {
         try {
             localStorage.setItem('userSettings', JSON.stringify(settings));
-            setMessage('设置已保存');
+            setMessage('Settings saved');
             setTimeout(() => setMessage(''), 3000);
         } catch (error) {
             console.error('Error saving settings:', error);
-            setMessage('保存设置失败');
+            setMessage('Failed to save settings');
         }
     };
 
-    // 导出用户数据
+    // Export user data
     const exportData = () => {
         try {
             const data = {
                 settings,
-                // 这里可以添加其他需要导出的用户数据
+                // You can add other user data to export here
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -125,7 +133,7 @@ const SettingsForm = () => {
             URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Error exporting data:', error);
-            setMessage('导出数据失败');
+            setMessage('Failed to export data');
         }
     };
 
@@ -144,9 +152,9 @@ const SettingsForm = () => {
     return (
         <div className={styles.form}>
             <section className={styles.section}>
-                <h2>AI 设置</h2>
+                <h2>AI Settings</h2>
                 <div className={styles.field}>
-                    <label htmlFor="provider">AI 提供商</label>
+                    <label htmlFor="provider">AI Provider</label>
                     <select
                         id="provider"
                         value={settings.ai.provider}
@@ -169,7 +177,7 @@ const SettingsForm = () => {
                             ...settings,
                             ai: { ...settings.ai, apiKey: e.target.value }
                         })}
-                        placeholder={`输入你的 ${settings.ai.provider === 'openai' ? 'OpenAI' : 'Gemini'} API Key`}
+                        placeholder={`Enter your ${settings.ai.provider === 'openai' ? 'OpenAI' : 'Gemini'} API Key`}
                     />
                 </div>
                 <div className={styles.field}>
@@ -182,11 +190,11 @@ const SettingsForm = () => {
                             ...settings,
                             ai: { ...settings.ai, apiUrl: e.target.value }
                         })}
-                        placeholder={`输入 ${settings.ai.provider === 'openai' ? 'OpenAI' : 'Gemini'} API 的URL`}
+                        placeholder={`Enter ${settings.ai.provider === 'openai' ? 'OpenAI' : 'Gemini'} API URL`}
                     />
                 </div>
                 <div className={styles.field}>
-                    <label htmlFor="modelName">模型名称</label>
+                    <label htmlFor="modelName">Model Name</label>
                     <input
                         type="text"
                         id="modelName"
@@ -195,13 +203,13 @@ const SettingsForm = () => {
                             ...settings,
                             ai: { ...settings.ai, modelName: e.target.value }
                         })}
-                        placeholder="输入模型名称，如 gpt-3.5-turbo"
+                        placeholder="Enter model name, e.g. gpt-3.5-turbo"
                     />
                 </div>
             </section>
 
             <section className={styles.section}>
-                <h2>英语等级</h2>
+                <h2>English Level</h2>
                 <div className={styles.field}>
                     <select
                         value={settings.englishLevel}
@@ -220,9 +228,28 @@ const SettingsForm = () => {
             </section>
 
             <section className={styles.section}>
-                <h2>语音设置</h2>
+                <h2>Mother Language</h2>
                 <div className={styles.field}>
-                    <label htmlFor="voice">发音音色</label>
+                    <select
+                        value={settings.motherLanguage}
+                        onChange={(e) => setSettings({
+                            ...settings,
+                            motherLanguage: e.target.value as 'chinese' | 'vietnamese'
+                        })}
+                    >
+                        {motherLanguages.map((language) => (
+                            <option key={language.value} value={language.value}>
+                                {language.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </section>
+
+            <section className={styles.section}>
+                <h2>Voice Settings</h2>
+                <div className={styles.field}>
+                    <label htmlFor="voice">Voice</label>
                     <select
                         id="voice"
                         value={settings.voice}
@@ -239,7 +266,7 @@ const SettingsForm = () => {
                     </select>
                 </div>
                 <div className={styles.field}>
-                    <label htmlFor="speed">发音速度: {settings.speed}</label>
+                    <label htmlFor="speed">Speech Speed: {settings.speed}</label>
                     <input
                         type="range"
                         id="speed"
@@ -256,9 +283,9 @@ const SettingsForm = () => {
             </section>
 
             <div className={styles.section}>
-                <h2 className={styles.sectionTitle}>OpenAI 语音配置（可选）</h2>
+                <h2 className={styles.sectionTitle}>OpenAI Speech Configuration (Optional)</h2>
                 <div className={styles.field}>
-                    <label htmlFor="openai-speech-api-url">API 地址：</label>
+                    <label htmlFor="openai-speech-api-url">API URL:</label>
                     <input
                         type="text"
                         id="openai-speech-api-url"
@@ -269,7 +296,7 @@ const SettingsForm = () => {
                     />
                 </div>
                 <div className={styles.field}>
-                    <label htmlFor="openai-speech-api-key">API Key：</label>
+                    <label htmlFor="openai-speech-api-key">API Key:</label>
                     <input
                         type="password"
                         id="openai-speech-api-key"
@@ -283,10 +310,10 @@ const SettingsForm = () => {
 
             <div className={styles.actions}>
                 <button onClick={saveSettings} className={styles.saveButton}>
-                    保存设置
+                    Save Settings
                 </button>
                 <button onClick={exportData} className={styles.exportButton}>
-                    导出数据
+                    Export Data
                 </button>
             </div>
 
@@ -295,4 +322,4 @@ const SettingsForm = () => {
     );
 };
 
-export default SettingsForm; 
+export default SettingsForm;

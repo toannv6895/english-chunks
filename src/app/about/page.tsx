@@ -5,90 +5,90 @@ import styles from './page.module.css';
 export default function AboutPage() {
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>关于英语块</h1>
+            <h1 className={styles.title}>About English Chunks</h1>
 
             <section className={styles.section}>
-                <h2>什么是英语块？</h2>
+                <h2>What are English Chunks?</h2>
                 <p>
-                    英语块是一个创新的英语学习工具，专注于帮助学习者掌握地道的英语表达方式。
-                    不同于传统的单词或句子学习，我们将实用的英语表达切分成易于理解和记忆的"块"，
-                    让你能够更自然地组织语言，提升口语表达能力。
+                    English Chunks is an innovative English learning tool focused on helping learners master authentic English expressions.
+                    Unlike traditional word or sentence learning, we divide practical English expressions into "chunks" that are easy to understand and remember,
+                    allowing you to organize language more naturally and improve your speaking ability.
                 </p>
             </section>
 
             <section className={styles.section}>
-                <h2>核心功能</h2>
+                <h2>Core Features</h2>
                 <ul className={styles.list}>
                     <li>
-                        <strong>智能提取</strong>
-                        <p>从任意英语文本中自动提取适合初学者的英语表达块，包含发音、含义和使用场景。</p>
+                        <strong>Intelligent Extraction</strong>
+                        <p>Automatically extract English expression chunks suitable for beginners from any English text, including pronunciation, meaning, and usage scenarios.</p>
                     </li>
                     <li>
-                        <strong>场景化学习</strong>
-                        <p>每个英语块都标注了适用的场景，帮助你在正确的语境中使用这些表达。</p>
+                        <strong>Scenario-based Learning</strong>
+                        <p>Each English chunk is labeled with applicable scenarios, helping you use these expressions in the correct context.</p>
                     </li>
                     <li>
-                        <strong>发音指导</strong>
-                        <p>集成了 YouGlish 视频学习系统，让你能看到母语者如何在实际对话中使用这些表达。</p>
+                        <strong>Pronunciation Guidance</strong>
+                        <p>Integrated with the YouGlish video learning system, allowing you to see how native speakers use these expressions in actual conversations.</p>
                     </li>
                     <li>
-                        <strong>播放控制</strong>
-                        <p>支持视频速度调节、重播和跳转功能，方便反复练习和深入学习。</p>
+                        <strong>Playback Control</strong>
+                        <p>Supports video speed adjustment, replay, and skip functions for convenient repeated practice and in-depth learning.</p>
                     </li>
                 </ul>
             </section>
 
             <section className={styles.section}>
-                <h2>学习建议</h2>
+                <h2>Learning Suggestions</h2>
                 <ul className={styles.list}>
                     <li>
-                        <strong>循序渐进</strong>
-                        <p>从简单的日常对话场景开始，逐步过渡到更复杂的表达方式。</p>
+                        <strong>Step by Step</strong>
+                        <p>Start with simple everyday conversation scenarios and gradually transition to more complex expressions.</p>
                     </li>
                     <li>
-                        <strong>情境记忆</strong>
-                        <p>注意每个英语块的使用场景，在相似场景中尝试运用。</p>
+                        <strong>Contextual Memory</strong>
+                        <p>Pay attention to the usage scenarios of each English chunk and try to apply them in similar contexts.</p>
                     </li>
                     <li>
-                        <strong>反复练习</strong>
-                        <p>使用 YouGlish 观看不同母语者的发音和用法，帮助加深理解。</p>
+                        <strong>Repeated Practice</strong>
+                        <p>Use YouGlish to watch different native speakers' pronunciations and usages to help deepen understanding.</p>
                     </li>
                     <li>
-                        <strong>实践应用</strong>
-                        <p>将学到的英语块融入日常对话，通过实践来巩固记忆。</p>
+                        <strong>Practical Application</strong>
+                        <p>Incorporate learned English chunks into daily conversations to reinforce memory through practice.</p>
                     </li>
                 </ul>
             </section>
 
             <section className={styles.section}>
-                <h2>技术特点</h2>
+                <h2>Technical Features</h2>
                 <ul className={styles.list}>
                     <li>
-                        <strong>AI 驱动</strong>
-                        <p>使用先进的 AI 技术智能分析和提取有价值的英语表达块。</p>
+                        <strong>AI-Driven</strong>
+                        <p>Using advanced AI technology to intelligently analyze and extract valuable English expression chunks.</p>
                     </li>
                     <li>
-                        <strong>实时处理</strong>
-                        <p>支持实时文本分析和英语块提取，快速获取学习材料。</p>
+                        <strong>Real-time Processing</strong>
+                        <p>Supports real-time text analysis and English chunk extraction for quick access to learning materials.</p>
                     </li>
                     <li>
-                        <strong>视频集成</strong>
-                        <p>无缝集成 YouGlish 视频学习系统，提供丰富的真实语言环境。</p>
+                        <strong>Video Integration</strong>
+                        <p>Seamlessly integrates with the YouGlish video learning system, providing a rich authentic language environment.</p>
                     </li>
                     <li>
-                        <strong>响应式设计</strong>
-                        <p>完美适配各种设备，随时随地学习英语。</p>
+                        <strong>Responsive Design</strong>
+                        <p>Perfectly adapts to various devices, allowing you to learn English anytime, anywhere.</p>
                     </li>
                 </ul>
             </section>
 
             <section className={styles.section}>
-                <h2>未来规划</h2>
+                <h2>Future Plans</h2>
                 <p>
-                    我们将持续优化和扩展英语块的功能，计划添加更多学习工具和练习模式，
-                    打造更完整的英语学习生态系统。欢迎提供反馈和建议，帮助我们做得更好！
+                    We will continuously optimize and expand the features of English Chunks, planning to add more learning tools and practice modes,
+                    creating a more complete English learning ecosystem. Feedback and suggestions are welcome to help us improve!
                 </p>
             </section>
         </div>
     );
-} 
+}

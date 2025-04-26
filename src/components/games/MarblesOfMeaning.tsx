@@ -9,10 +9,10 @@ interface MarblesOfMeaningProps {
 const MarblesOfMeaning: React.FC<MarblesOfMeaningProps> = ({ onComplete, currentStars }) => {
   return (
     <div className={styles.container}>
-      <h2>弹珠游戏</h2>
+      <h2>Marbles of Meaning</h2>
       <p>Coming soon...</p>
     </div>
   );
 };
 
-export default MarblesOfMeaning; 
+export default MarblesOfMeaning;
