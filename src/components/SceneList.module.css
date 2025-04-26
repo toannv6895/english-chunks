@@ -4,6 +4,24 @@
     padding: 2rem;
 }
 
+.scenesHeader {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.scenesTitle {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #1f2937;
+}
+
+.scenesDescription {
+    font-size: 1.1rem;
+    color: #6b7280;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -47,6 +65,13 @@
     padding: 1rem 0;
 }
 
+.dialogueActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
 .backButton {
     background: #2563eb;
     color: white;
@@ -55,12 +80,29 @@
     border-radius: 6px;
     font-weight: 500;
     cursor: pointer;
-    margin-bottom: 2rem;
     transition: background 0.2s ease;
 }
 
 .backButton:hover {
     background: #1d4ed8;
+}
+
+.saveButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.saveButton:hover {
+    background: #059669;
 }
 
 .loading {
