@@ -1,0 +1,190 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+.topicHeader {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    gap: 1.5rem;
+}
+
+.topicInfo {
+    flex: 1;
+}
+
+.topicTitle {
+    font-size: 2rem;
+    margin: 0 0 0.5rem 0;
+    color: #1f2937;
+}
+
+.topicDescription {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+.backButton {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+}
+
+.backButton:hover {
+    background: #1d4ed8;
+}
+
+.dialogueActions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.saveButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.saveButton:hover {
+    background: #059669;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+}
+
+.dialoguePreview {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    max-height: 400px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.error {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.chunksGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.progressContainer {
+    width: 100%;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.progressBar {
+    height: 100%;
+    background: #2563eb;
+    transition: width 0.3s ease;
+}
+
+.sceneInputContainer {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.sceneInput {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.sceneInput:focus {
+    outline: none;
+    border-color: #0070f3;
+}
+
+.generateButton {
+    padding: 10px 20px;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.generateButton:hover:not(:disabled) {
+    background-color: #0051b3;
+}
+
+.generateButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.dialogueCollapse {
+    margin-bottom: 2rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dialogueHeader {
+    padding: 1rem;
+    background: #f8fafc;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.dialogueHeader:hover {
+    background: #f1f5f9;
+}
+
+.dialogueContent {
+    padding: 1rem;
+    background: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.dialogueContent.expanded {
+    max-height: 2000px;
+    overflow-y: auto;
+}
